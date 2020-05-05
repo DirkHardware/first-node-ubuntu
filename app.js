@@ -1,3 +1,4 @@
-console.log(module)
-
+let log = require('./logger')
 // git push test
+
+log('message')
