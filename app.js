@@ -1,5 +1,10 @@
-const path = require('path')
+const EventEmitter = require('events');
+const emitter = new EventEmitter();
 
-var pathObj = path.parse(__filename);
+// Register a listener
+emitter.on('messageLogged', function(){
+    console.log('Listener called');
+});
 
-console.log(pathObj)
+// Raise an event
+emitter.emit('messageLogged');
