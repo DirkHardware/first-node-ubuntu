@@ -1,4 +1,5 @@
-let log = require('./logger')
-// git push test
+const path = require('path')
 
-log('message')
+var pathObj = path.parse(__filename);
+
+console.log(pathObj)
