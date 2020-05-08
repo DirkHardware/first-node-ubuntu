@@ -1,21 +1,19 @@
 const EventEmitter = require('events');
-const emitter = new EventEmitter();
-const emitter2 = new EventEmitter();
+// const emitter = new EventEmitter();
+// const emitter2 = new EventEmitter();
 
-// Register a listener
-emitter.on('messageLogged', (arg) => {
-    console.log('Listener called', arg.url);
-});
 
 // Register a logging listener
-emitter2.on('Logging', (arg) => {
-    console.log(`Calm down ${arg} you jackass Im logging`)
-})
 
-emitter2.emit('Logging', "Anderson")
+const Logger = require('./logger');
+const logger = new Logger();
 
-// Raise an event
-emitter.emit('messageLogged', { id: 1, url: 'dicks.com'});
+// Register a listener
+logger.on('messageLogging', (name) => {
+    console.log('Listener called', name)
+    });
+logger.on('messageLogged', (arg) => {
+    console.log('Listener called', arg.url);
+    });
 
-// Raise: logging (data: message
-
+logger.log('message', 'Anderson')
