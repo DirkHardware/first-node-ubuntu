@@ -15,8 +15,8 @@ let notname = 'not the name variable';
 logger.on('messageLogging', (name) => {
     // console.log here actually prints the second argument in the emit function in the logger.js module. I don't know how it does this, but without it
     // you won't see the text in the emitter.
-
     console.log(name);
+
     // Curiously, when given a console.log without a corresponding argument in the Logger class' arguments, it will not print the emitter message but
     // will behave normally, as observed with the i and notname variables
     i++ 
@@ -27,4 +27,7 @@ logger.on('messageLogged', (arg) => {
     console.log(arg);
     });
 
+
+// Without this logger.log function though, the console.log functions in our .on methods, they will not have access to the either the fire keywords data 
+// in the logger.js class/instance and NOTHING will fire
 logger.log('Anderson', { id: 1, url: 'website.com'});
