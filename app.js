@@ -1,22 +1,27 @@
-const http = require('http')
+var _ = require('underscore');
 
-const server = http.createServer((req, res)=>{
-    if (req.url === '/'){
-        res.write(`Get your yankee ass off my property.`);
-        res.write(`\nI don't care if the bank gave you the deed.`)
-        res.end();
-    };
+var result = _.contains([1,2,3], 2)
+console.log(result)
 
-    if (req.url === '/unknown/hinson'){
-        res.write(JSON.stringify([1, 2, `School? Ain't that the damn place they got all them uhhh, let's see, watcha call 'um, uhh? Fold outs covered in scribblings wrote up all over?`]))
-        res.end()
-    }
-});
+// const http = require('http')
 
-server.on('connection', (socket) => {
-    console.log('new connection')
-});
+// const server = http.createServer((req, res)=>{
+//     if (req.url === '/'){
+//         res.write(`Get your yankee ass off my property.`);
+//         res.write(`\nI don't care if the bank gave you the deed.`)
+//         res.end();
+//     };
 
-server.listen(3000);
+//     if (req.url === '/unknown/hinson'){
+//         res.write(JSON.stringify([1, 2, `School? Ain't that the damn place they got all them uhhh, let's see, watcha call 'um, uhh? Fold outs covered in scribblings wrote up all over?`]))
+//         res.end()
+//     }
+// });
 
-console.log('Listening on Port 3000...')
+// server.on('connection', (socket) => {
+//     console.log('new connection')
+// });
+
+// server.listen(3000);
+
+// console.log('Listening on Port 3000...')
