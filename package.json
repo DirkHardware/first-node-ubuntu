@@ -4,7 +4,7 @@
   "description": "",
   "main": "app.js",
   "dependencies": {
-    "mongoose": "^5.9.15",
+    "mongoose": "^5.9.18",
     "underscore": "1.10.2"
   },
   "devDependencies": {
