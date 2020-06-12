@@ -29,3 +29,5 @@ server.get('/blog/posts/:id/:year/:month', (req, res) => {
 //You can set your PORT environment variable manually with export PORT={port number} in terminal
 const port = process.env.PORT || 3000;
 server.listen(port, () => console.log(`Listening on port ${port}`))
+
+//checking to see if I've unbroken git
