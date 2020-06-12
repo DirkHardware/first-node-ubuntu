@@ -1,6 +1,9 @@
 const express = require('express')
 const server = express();
 
+//wtf is .use?
+server.use(express.json())
+
 const courses = [
     { id: 1, name: "fight a bear"},
     { id: 2, name: "defuse a bomb"},
@@ -31,6 +34,15 @@ server.get('/api/courses/:id', (req, res) => {
 server.get('/blog/posts/:id/:year/:month', (req, res) => {
     //returns query strings. See chapter 47 - Route parameters
     res.send(req.query)
+})
+
+server.post('/api/courses', (req, res) => {
+    const course = {
+        id: courses.length + 1,
+        name: req.body.name
+    }
+    courses.push(course);
+    res.send(course);
 })
 
 // PORT is an environmental variable.
