@@ -27,10 +27,10 @@ server.get('/api/courses/', (req, res) => {
 //Node does not suffer from the issue Rails (and I think React Routes?) has where URLs must be listed in order of most complex to most root in order for more complex URLs to not simply direct you to their nearest listed root. 
 
 server.get('/api/courses/:id', (req, res) => {
-    //.find is a node method that takes an argument and iterates over an array. Much like piping in ruby, the parens take an argument which is a name for the currently iterated variable (think of: do |arbitrary_variable_name| in Ruby), and then a function containing the criterea that must be met for the proper datum to be returned. Remember to parseInt for id nums, as everything is returned as a string.
+    //.find is a node method that takes an argument and iterates over an array. Much like piping in ruby, the parens take an argument which is a name for the currently iterated variable (think of: do |arbitrary_variable_name| in Ruby), and then a function containing the criterea that must be met for the proper datum to be returned. Remember to parseInt for id nums, as everything is returned as a string. Find returns THE FIRST value in an array to match the params
     const course = courses.find(c => c.id === parseInt(req.params.id))
     
-    if (!course) res.status(404).send('Course not found'); 
+    if (!course) return res.status(404).send('Course not found'); 
     res.send(course);
 })
 
@@ -41,47 +41,77 @@ server.get('/blog/posts/:id/:year/:month', (req, res) => {
 
 server.post('/api/courses', (req, res) => {
     //INPUT VALIDATION:
+
+    const { error } = schema.validate(req.body);
+    console.log(result);
+
+    if (error) {
+        //the below code sends out the first error notice in the array only
+        return res.status(400).send(error.details[0].message);
+
+    }
+
+    const course = {
+        id: req.body.id,
+        name: req.body.name
+    }
+    courses.push(course)
+    res.send(course) 
+})
+
+server.put('/api/courses/:id', (req, res) => {
+    //Look up the course4
+    const course = courses.find(c => c.id === parseInt(req.params.id));
+    //If not extant, 404
+    if (!course) return res.status(404).send('The course with the given ID was not found')
+
+    //Validate
+    //If invalid, return 400 - bad request
+    
+    const { error } = validateCourse(req.body)
+    if (error) {
+        return res.status(400).send(error.details[0].message);
+    }
+
+    //Update course
+    course.name = req.body.name;
+    //Return the updated course
+    res.send(course);
+})
+
+server.delete('/api/courses/:id', (req, res) => {
+    //Look up course
+    const course = courses.find(c => c.id === parseInt(req.params.id));
+    //Not existing, return 404
+    if (!course) 
+    //Remember your returns! Before we added the return, node was just going ahead with the function and deleting the last course in the array when it couldn't find a course
+        return res.status(404).send("No course with that ID exists")
+
+    //Delete
+    //IndexOf is an Array method returns the index of the value in the argument
+    const index = courses.indexOf(course);
+    //splice deletes or adds things to array, check W3 schools for args
+    courses.splice(index, 1)
+
+    //Return the same course
+    res.send(course)
+})
+
+function validateCourse(course){
     // @hapi/joi requires a schema to validate data. It is defined as a const below
     const schema = Joi.object({
         // Joi will throw a validation error when it hits the first failed requirement.
-        id: Joi.number()
-        .integer()
-        .required(),
 
         name: Joi.string()
         .min(5)
         .required()
     });
 
-    //line above demands string be minimum 3 characters
-
+    
     //The chapter for joi is outdated. You must execute the validate method on your schema, instead of on the Joi object with schema as an argument.
-    const result = schema.validate(req.body);
-    console.log(result);
+    return schema.validate(course);
 
-    if (result.error) {
-        //the below code sends out the first error notice in the array only
-        res.status(400).send(result.error.details[0].message);
-        return;
-    }
-    else {
-        const course = {
-            id: req.body.id,
-            name: req.body.name
-        }
-        courses.push(course)
-        res.send(course)
-    };
-
-    // const course = {
-    //     id: courses.length + 1,
-    //     name: req.body.name
-    // }
-
-    //commented this out during the validation chapter because it was creating new courses even when Joi threw a validation error
-    // courses.push(course);
-    // res.send(course);
-})
+}
 
 // PORT is an environmental variable.
 // Ports are assigned dynamically by servers, so we need to set the the port we use with the PORT variable
