@@ -20,6 +20,7 @@ server.use(express.json())
 // ^^^ Note how the middleware above immediately kicks in with any kind of request
 // Each custom middlware function should be in a seperate module
 server.use(logger);
+server.use(validator)
 
 
 const courses = [
