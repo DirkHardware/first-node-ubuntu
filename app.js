@@ -40,15 +40,11 @@ server.get('/blog/posts/:id/:year/:month', (req, res) => {
 })
 
 server.post('/api/courses', (req, res) => {
-    //INPUT VALIDATION:
+    // INPUT VALIDATION:
 
-    const { error } = schema.validate(req.body);
-    console.log(result);
-
+   const { error } = validateCourse(req.body)
     if (error) {
-        //the below code sends out the first error notice in the array only
         return res.status(400).send(error.details[0].message);
-
     }
 
     const course = {
@@ -60,7 +56,7 @@ server.post('/api/courses', (req, res) => {
 })
 
 server.put('/api/courses/:id', (req, res) => {
-    //Look up the course4
+    //Look up the course
     const course = courses.find(c => c.id === parseInt(req.params.id));
     //If not extant, 404
     if (!course) return res.status(404).send('The course with the given ID was not found')
@@ -101,7 +97,7 @@ function validateCourse(course){
     // @hapi/joi requires a schema to validate data. It is defined as a const below
     const schema = Joi.object({
         // Joi will throw a validation error when it hits the first failed requirement.
-
+        id: Joi.number(),
         name: Joi.string()
         .min(5)
         .required()
