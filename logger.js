@@ -1,11 +1,8 @@
-const EventEmitter = require('events');
-
-class Logger extends EventEmitter {
-    log(name, arg) {
-        //send http request
-        this.emit('messageLogging', `Calm down ${name} you jackass Im logging`)
-        this.emit('messageLogged', `Going to ${arg.url}`);
+function log(req, res, next){
+    //Next is a reference to the next middleware function in the pipeline
+        console.log('Logging...');
+        // If you don't use next, the cycle will hang.
+        next()
     };
-};
 
-module.exports = Logger;
+module.exports = log;

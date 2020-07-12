@@ -1,11 +1,26 @@
 const express = require('express')
 const server = express();
 const Joi = require('@hapi/joi');
+const logger = require('./logger')
 const { rest } = require('underscore');
 
 //wtf is .use?
 //turns out use is a method for calling the express object, which is just a collection of middleware
 server.use(express.json())
+
+//We can utilize the .use() method to call our own middleware
+// For example
+
+// server.use(function(req, res, next){
+// //Next is a reference to the next middleware function in the pipeline
+//     console.log('Logging...');
+//     // If you don't use next, the cycle will hang.
+//     next()
+// });
+// ^^^ Note how the middleware above immediately kicks in with any kind of request
+// Each custom middlware function should be in a seperate module
+server.use(logger);
+
 
 const courses = [
     { id: 1, name: "fight a bear"},
