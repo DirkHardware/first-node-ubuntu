@@ -5,8 +5,11 @@ const logger = require('./logger')
 const { rest } = require('underscore');
 
 //wtf is .use?
-//turns out use is a method for calling the express object, which is just a collection of middleware
+//turns out use is a method for calling middleware
 server.use(express.json())
+
+//You need to give the urlencoded method an key/value argument of extended: true, in order to allow the middleware to proccess complex, nested objects.
+server.use(express.urlencoded( {extended: true}))
 
 //We can utilize the .use() method to call our own middleware
 // For example
@@ -20,7 +23,6 @@ server.use(express.json())
 // ^^^ Note how the middleware above immediately kicks in with any kind of request
 // Each custom middlware function should be in a seperate module
 server.use(logger);
-server.use(validator)
 
 
 const courses = [

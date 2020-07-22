@@ -2,10 +2,15 @@ const express = require('express')
 const server = express();
 const Joi = require('@hapi/joi');
 const { rest } = require('underscore');
+const helmet = require('helmet')
+const morgan = require('morgan')
 
 //wtf is .use?
 //turns out use is a method for calling the express object, which is just a collection of middleware
 server.use(express.json())
+server.use(express.urlencoded( {extended: true}))
+server.use(helmet())
+server.use(morgan('tiny'))
 
 const courses = [
     { id: 1, name: "fight a bear"},
