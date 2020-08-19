@@ -5,6 +5,7 @@ const { rest } = require('underscore');
 const helmet = require('helmet')
 const morgan = require('morgan')
 const config = require('config')
+const startupDebugger = require('debug')('server:startup')
 
 console.log(`NODE_ENV: ${process.env.NODE_ENV}`)
 console.log(`app: ${server.get('env')}`)
@@ -13,12 +14,17 @@ console.log(`app: ${server.get('env')}`)
 // To change the env set export NODE_ENV=[whatever environment youw ant] in terminal
 if (server.get('env') === 'development') {
     server.use(morgan('tiny'));
-    console.log('Morgan enabled')
+    startupDebugger('Morgan enabled...')
 }
 
 //you can easily store configs for different environments using packages such as rc or config
 //Below is an example of how to use the get command in config to get a piece of data from various config, saved in JSON
 console.log("Application Name: " + config.get("name"))
+
+// You don't need to require pug
+server.set('view engine', 'pug')
+// The setting below is optional. This is actuallly default
+server.set('views', './views')
 
 //wtf is .use?
 //turns out use is a method for calling the express object, which is just a collection of middleware
@@ -26,7 +32,6 @@ console.log("Application Name: " + config.get("name"))
 server.use(express.json())
 server.use(express.urlencoded( {extended: true}))
 server.use(helmet())
-// server.use(config())
 
 const courses = [
     { id: 1, name: "fight a bear"},
@@ -35,7 +40,7 @@ const courses = [
 ];
 
 server.get('/', (req, res) => {
-    res.send('Hello World');
+    res.render('index', { title: 'My Express App', message: "Hello"});
 });
 
 server.get('/unknown/hinson', (req, res) => {
